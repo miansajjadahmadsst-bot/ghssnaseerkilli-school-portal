@@ -32,3 +32,4 @@ Important:
 - Since the portals are hosted on script.google.com and this PWA is hosted on a different origin, the portal pages may open in a browser tab rather than remain inside the standalone app. This package does not modify either Apps Script project.
 - Keep the Apps Script deployments set to the access level required by your school. Do not make a private management portal public just to make the PWA installable.
 GHSS School Portal Publishing Update
+<script src="./api-bridge.js"></script>
