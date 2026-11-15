@@ -1,0 +1,5 @@
+const CACHE_NAME = "ghss-attendance-pwa-v1";
+const APP_SHELL = ["./","./index.html","./manifest.json","./api-bridge.js","./icons/icon-192.png","./icons/icon-512.png"];
+self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)));self.skipWaiting();});
+self.addEventListener("activate",event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)));await self.clients.claim();})());});
+self.addEventListener("fetch",event=>{const req=event.request;const url=new URL(req.url);if(req.method!=="GET"||url.origin!==self.location.origin)return;event.respondWith((async()=>{const cached=await caches.match(req);if(cached)return cached;try{const res=await fetch(req);if(res&&res.ok){const c=await caches.open(CACHE_NAME);c.put(req,res.clone());}return res;}catch(e){if(req.mode==="navigate")return (await caches.match("./index.html"))||Response.error();return Response.error();}})());});
